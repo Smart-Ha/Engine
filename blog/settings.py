@@ -7,7 +7,7 @@ class Settings:
     '''
     def __init__(self, default_config):
         self.collection = default_config['SETTINGS_COLLECTION']
-        self.config = default_config
+        self.config = default_config    # 传递的是引用，指向同一个对象（地址）
         self.config['PAGE_SIZE'] = 10
         self.config['SEARCH'] = False
         self.config['BLOG_TITLE'] = 'ENGINE BLOG'

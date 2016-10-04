@@ -5,8 +5,8 @@
 
 <header class="am-g am-g-fixed blog-fixed blog-text-center blog-header">
     <div class="am-u-sm-8 am-u-sm-centered">
-        <img width="200" src="http://s.amazeui.org/media/i/brand/amazeui-b.png" alt="Amaze UI Logo"/>
-        <h2 class="am-hide-sm-only">好记性不如烂笔头</h2>
+        <h1>专业书呆子的博客世界</h1>
+        <h3 class="am-hide-sm-only">好记性不如烂笔头</h3>
     </div>
 </header>
 <hr>
@@ -114,7 +114,7 @@
                         <p><a>{{ post['author'] }}</a></p>
                     </div>
                     <div class="am-u-lg-10 am-u-md-10 am-u-sm-10 blog-entry-text">
-                        <h1><a href="">{{ post['title'] | safe }}</a></h1>
+                        <h1><a href="{{ url_for('show_post', id=post['id']) }}" target="_blank">{{ post['title'] | safe }}</a></h1>
                         <div class="tags">
                             {%- if post['tags'] -%}
                             {%- for tag in post['tags'] -%}
@@ -165,12 +165,7 @@
         </article>
 
 
-
-
-        <ul class="am-pagination">
-            <li class="am-pagination-prev"><a href="">&laquo; Prev</a></li>
-            <li class="am-pagination-next"><a href="">Next &raquo;</a></li>
-        </ul>
+        {%- block pager -%}{%- include 'pager.html' -%}{%- endblock -%}
     </div>
 
     <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
@@ -232,7 +227,7 @@
 <![endif]-->
 
 <!--[if (gte IE 9)|!(IE)]><!-->
-<script src="//libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
 <script src="//cdn.amazeui.org/amazeui/2.1.0/js/amazeui.min.js"></script>
 <!--<![endif]-->
 

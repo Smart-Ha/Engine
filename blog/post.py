@@ -1,4 +1,5 @@
 # encoding=utf-8
+from bson import ObjectId
 
 
 class Post:
@@ -17,8 +18,9 @@ class Post:
         try:
             condition = {}
             # TODO tag & search
-
-            cursor = self.collection.find().sort(
+            if tag is not None:
+                condition = {'tags':tag}
+            cursor = self.collection.find(condition).sort(
                 'date', direction=-1).skip(skip).limit(limit)
             self.response['data'] = []
             for post in cursor:
@@ -45,6 +47,23 @@ class Post:
 
         return self.response
 
+    def get_post_by_id(self, id):
+        self.response['error'] = None
+        try:
+            self.response['data'] = self.collection.find_one({'_id': ObjectId(id)})
+        except Exception, e:
+            self.print_debug_info(e, self.debug_mode)
+            self.response['error'] = 'Post not found'
+
+        return self.response
+
+    def get_total_count(self, tag=None):
+        condition = {}
+        if tag is not None:
+            condition = {'tags': tag}
+
+        return self.collection.find(condition).count()
+
     @staticmethod
     def print_debug_info(msg, show=False):
         if show:
@@ -63,6 +82,9 @@ class Post:
             print '\n\n---\nError type: %s in file: %s on line: %s\nError details: %s\n---\n\n' \
                   % (error['type'], error['file'], error['line'], error['details'])
             print error_end
+
+
+
 
 
 

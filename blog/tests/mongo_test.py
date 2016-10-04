@@ -1,6 +1,7 @@
 # encoding=utf-8
 import datetime
 import pymongo
+from bson.objectid import ObjectId
 
 # 创建连接
 conn = pymongo.MongoClient("mongodb://localhost")
@@ -12,6 +13,7 @@ print u'所有聚集:', db.collection_names()
 post = db.post
 # print post.find_one({'likes': {'$gt': 90}})
 
+'''
 # 删除集合
 # post.drop()
 post.insert([{
@@ -30,4 +32,9 @@ post.insert([{
     'tags': ['java', 'php5'],
     'comments': []
    }])
-print post.find()
+'''
+for p in post.find():
+    print p['_id'], p['title']
+for p in post.find({'_id': ObjectId('57f268e82551733966a27987')}):
+    print p['_id'], p['title']
+
