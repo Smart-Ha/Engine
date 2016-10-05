@@ -43,14 +43,20 @@ def show_post(id):
     return render_template('one_post.html', post=post['data'])
 
 
+@app.route('/new_post')
+def new_post():
+    return render_template('new_post.html')
+
+
 @app.route('/s/<query>', defaults={'page': 1})
 @app.route('/s/<query>/<int:page>')
 def search(query, page):
     pass
 
-
+'''
 # 错误处理器 关联abort函数，当错误发生时，错误被当做参数传进来
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
+'''

@@ -12,4 +12,5 @@ app.config.from_object('blog.config')
 settingsClass = settings.Settings(app.config)
 
 import blog.post_view
+import blog.user_view
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{%- block head -%}{%- include 'head.html' -%}{%- endblock -%}
+<body>
+{%- block header -%}{%- include 'header.html' -%}{%- endblock -%}
+<div class="am-g" style="border: #eee solid 1px;">
+    <form action="{{ url_for('login') }}" method="POST" role="form" class="am-form am-u-md-8">
+        <legend>Login</legend>
+
+        <div class="am-form-group">
+            <label for="">username</label>
+            {%- if error -%}
+            <span>{{error_msg}}</span>
+
+            {%- endif -%}
+            <input type="text" id="" name="username" placeholder="输入用户名">
+        </div>
+        <div class="am-form-group">
+            <label for="">password</label>
+            <input type="password" id="" name="password" placeholder="输入密码">
+        </div>
+
+        <button type="submit" class="am-btn am-btn-primary">提交</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>new post</title>
+
+    <!-- Amaze UI CSS -->
+    <link rel="stylesheet" href="//cdn.staticfile.org/amazeui/2.2.1/css/amazeui.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editormd.css') }}">
+</head>
+<body>
+
+
+<div id="full-editor">
+    <textarea style="display:none;">### Hello Editor.md !</textarea>
+</div>
+
+
+<!--[if lt IE 9]>
+<script src="//cdn.staticfile.org/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="/js/polyfill/rem.min.js"></script>
+<script src="//cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdn.staticfile.org/amazeui/2.1.0/js/amazeui.legacy.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="//cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/amazeui/2.2.1/js/amazeui.js"></script>
+<!--<![endif]-->
+<script src="{{ url_for('static', filename='js/editormd.min.js') }}"></script>
+
+<script>
+    $(function () {
+        Editor = editormd("full-editor", {
+            width: "90%",
+            height: 640,
+            syncScrolling: "single",
+            path: "../static/lib/",
+             toolbarIcons : function() {//自定义工具栏
+            return ["undo", "redo", "|", "bold","italic", "quote","hr","|","h1","h2","h3","h4","|","code","preformatted-text"
+                ,"table","|","link","reference-link" ,"image","|","clear","help","|","watch", "fullscreen", "preview"]
+        },
+        });
+    });
+</script>
+
+</body>
+</html>
