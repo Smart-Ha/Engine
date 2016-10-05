@@ -83,6 +83,28 @@ class Post:
                   % (error['type'], error['file'], error['line'], error['details'])
             print error_end
 
+    def add_new_post(self, post):
+        self.response['error'] = None
+        try:
+            self.collection.insert(post)
+            self.response['data'] = self.collection['_id']
+        except Exception, e:
+            self.response['error'] = 'system error ...'
+            self.print_debug_info(e, self.debug_mode)
+
+        return self.response
+
+    def update_post(self, post, post_id):
+        self.response['error'] = None
+        try:
+            self.collection.update({'_id': ObjectId(post_id)},
+                                   {'$set': post}, upsert=False)
+            self.response['data'] = self.collection['_id']
+        except Exception, e:
+            self.response['error'] = 'system error...'
+            self.print_debug_info(e, self.debug_mode)
+
+        return self.response
 
 
 

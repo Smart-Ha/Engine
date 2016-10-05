@@ -1,6 +1,10 @@
 # encoding=utf-8
+import cgi
 
-from flask import abort, render_template
+from flask import abort, render_template, request, session
+from flask import redirect
+from flask import url_for
+
 from blog import post
 from blog import pagination
 from blog import app
@@ -43,9 +47,45 @@ def show_post(id):
     return render_template('one_post.html', post=post['data'])
 
 
-@app.route('/new_post')
+@app.route('/new_post', methods=['POST', 'GET'])
 def new_post():
-    return render_template('new_post.html')
+    error = False
+    error_msg = 'form is not fill out completely!'
+    if request.method == 'POST':
+        title = request.form.get('title', None)
+        preview = request.form.get('short-text', None)
+        body = request.form.get('full-text', None)
+
+        if not title or not preview or not body:
+            error = True
+        else:
+            tags = cgi.escape(request.form.get('tags'))
+            tag_array = extract_tags(tags)
+
+            post_data = {
+                'title': title,
+                'preview': preview,
+                'body': body,
+                'author': session['user'],
+                'tags': tag_array
+            }
+            post-id = request.form.get('post-id')
+            if post-id:
+                post = postClass.update_post(post_data,post-id)
+            else:
+                post = postClass.add_new_post(post_data)
+            if post['error']:
+                error = True
+                error_msg = post['error']
+            else:
+                return redirect(url_for('show_post', id=post['data']))
+
+    return render_template('new_post.html', error=error,error_msg=error_msg)
+
+
+@app.route('/edit_post', methods='GET')
+def edit_post():
+    return render_template('edit_post.html')
 
 
 @app.route('/s/<query>', defaults={'page': 1})
@@ -53,6 +93,18 @@ def new_post():
 def search(query, page):
     pass
 
+
+def extract_tags(tags):
+    whitespace = re.compile('\s')
+    nowhite = whitespace.sub("", tags)
+    tags_array = nowhite.split(',')
+
+    cleaned = []
+    for tag in tags_array:
+        if tag not in cleaned and tag != "":
+            cleaned.append(tag)
+
+    return cleaned
 '''
 # 错误处理器 关联abort函数，当错误发生时，错误被当做参数传进来
 @app.errorhandler(404)

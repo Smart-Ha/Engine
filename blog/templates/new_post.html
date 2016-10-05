@@ -11,40 +11,57 @@
     <!-- Amaze UI CSS -->
     <link rel="stylesheet" href="//cdn.staticfile.org/amazeui/2.2.1/css/amazeui.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/editormd.css') }}">
+    <link rel="stylesheet" href="../static/css/amazeui.css">
 </head>
 <body>
 
 
-<div id="full-editor">
-    <textarea style="display:none;">### Hello Editor.md !</textarea>
+<div class="am-container">
+    <form class="am-form">
+        <div class="am-form-group">
+            <span>标题:</span>
+            <input type="text" class="am-form-field" placeholder="请输入标题"/>
+        </div>
+        <div class="am-form-group">
+            <span>摘要:</span>
+            <textarea  class="am-form-field" placeholder="请输入摘要"></textarea>
+        </div>
+        <div class="am-form-group">
+            <span>正文：</span>
+            <div id="full-text" class="am-form-field">
+                <textarea style="display:none;">## 请使用markdown语言!</textarea>
+            </div>
+        </div>
+        <div class="am-form-group">
+            <span>请输入Tag标签，以";"隔开</span>
+            <input class="am-form-field" placeholder="请输入tag"/>
+        </div>
+        <div class="am-form-group">
+            <button class="am-btn am-btn-danger am-fr" type="submit">提交</button>
+        </div>
+    </form>
+
+
 </div>
 
 
-<!--[if lt IE 9]>
-<script src="//cdn.staticfile.org/jquery/1.11.1/jquery.min.js"></script>
-<script src="//cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="/js/polyfill/rem.min.js"></script>
-<script src="//cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-<script src="//cdn.staticfile.org/amazeui/2.1.0/js/amazeui.legacy.min.js"></script>
-<![endif]-->
 
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="//cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
-<script src="//cdn.staticfile.org/amazeui/2.2.1/js/amazeui.js"></script>
-<!--<![endif]-->
+
+
+{%- block script -%}{%- include 'script.html' -%}{%- endblock -%}
 <script src="{{ url_for('static', filename='js/editormd.min.js') }}"></script>
 
 <script>
     $(function () {
-        Editor = editormd("full-editor", {
-            width: "90%",
-            height: 640,
+        Editor = editormd("full-text", {
+            width: "100%",
+            height: 560,
             syncScrolling: "single",
             path: "../static/lib/",
-             toolbarIcons : function() {//自定义工具栏
-            return ["undo", "redo", "|", "bold","italic", "quote","hr","|","h1","h2","h3","h4","|","code","preformatted-text"
-                ,"table","|","link","reference-link" ,"image","|","clear","help","|","watch", "fullscreen", "preview"]
-        },
+            toolbarIcons : function() {//自定义工具栏
+                return ["undo", "redo", "|", "bold","italic", "quote","hr","|","h1","h2","h3","h4","|","code","preformatted-text"
+                     ,"table","|","link","reference-link" ,"image","|","clear","help","|","watch", "fullscreen", "preview"]
+            }
         });
     });
 </script>
