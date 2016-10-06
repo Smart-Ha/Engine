@@ -1,39 +1,46 @@
-<header class="am-g am-g-fixed blog-fixed blog-text-center blog-header">
-    <div class="am-u-sm-8 am-u-sm-centered">
-        <h1>专业书呆子的博客世界</h1>
-        <h3 class="am-hide-sm-only">好记性不如烂笔头</h3>
+<header class="head">
+    <div class=" am-topbar-fixed-top am-topbar">
+        <div class=" am-container">
+            <div class="am-topbar-brand app-logo">
+                <a href="/">
+                    书呆子的世界
+                </a>
+            </div>
+            <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm  am-show-sm-only"
+                    data-am-collapse="{target:'#doc-topbar-collapse'}">
+                <span class="am-sr-only">导航切换</span>
+                <span class="am-icon-bars"></span>
+            </button>
+            <div class="am-collapse am-topbar-collapse am-fr" id="doc-topbar-collapse">
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+                    <li class='am-active'><a href="/">首页</a></li>
+
+                    <li><a href='/'> 精选 <span></span> </a></li>
+
+                    <li><a href='/'> 大牛 <span></span> </a></li>
+
+                    <li><a href='/'> 资讯 <span></span> </a></li>
+
+                    <li><a href='/about/'> 关于 <span></span> </a></li>
+
+                    <li><a href='/new_post'> 写博客 <span></span> </a></li>
+
+                    <li class="search">
+                        <form class="am-form" action="/search" method="post">
+                            <div class="am-form-icon am-form-feedback">
+                                <input name="q" type="text" class="am-form-field"  placeholder="在这里搜索..."/>
+
+                            </div>
+                        </form>
+                    </li>
+                    {% if session.user  %}
+                    <li><a href="/user/">{{ session.user.username }}</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                    <li><a href="/login">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
     </div>
 </header>
-<hr>
-<!-- nav start -->
-<nav class="am-g am-g-fixed blog-fixed blog-nav">
-    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only blog-button"
-            data-am-collapse="{target: '#blog-collapse'}"><span class="am-sr-only">导航切换</span> <span
-            class="am-icon-bars"></span></button>
-
-    <div class="am-collapse am-topbar-collapse" id="blog-collapse">
-        <ul class="am-nav am-nav-pills am-topbar-nav">
-            <li class="am-active"><a href="lw-index.html">首页</a></li>
-            <li class="am-dropdown" data-am-dropdown>
-                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-                    首页布局 <span class="am-icon-caret-down"></span>
-                </a>
-                <ul class="am-dropdown-content">
-                    <li><a href="">1. blog-index-standard</a></li>
-                    <li><a href="lw-index-nosidebar.html">2. blog-index-nosidebar</a></li>
-                    <li><a href="lw-index-center.html">3. blog-index-layout</a></li>
-                    <li><a href="lw-index-noslider.html">4. blog-index-noslider</a></li>
-                </ul>
-            </li>
-            <li><a href="">标准文章</a></li>
-            <li><a href="{{ url_for('login') }}" target="_blank">登录</a></li>
-
-        </ul>
-        <form class="am-topbar-form am-topbar-right am-form-inline" role="search">
-            <div class="am-form-group">
-                <input type="text" class="am-form-field am-input-sm" placeholder="搜索">
-            </div>
-        </form>
-    </div>
-</nav>
-<hr>

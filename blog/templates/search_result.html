@@ -5,21 +5,29 @@
 
 {%- block header -%}{%- include 'header.html' -%}{%- endblock -%}
 
+
+<div class="am-g">
+    <form  action="/search" method="GET" role="form" class="am-form">
+    <input type="text" name="q" class="am-form-field am-input-sm" placeholder="请输入搜索内容"/>
+    <button type="submit" class="am-btn am-btn-primary">搜索</button>
+    </form>
+</div>
 <!-- content srart -->
 <div class="am-g am-g-fixed blog-fixed">
+    <h3>{{query}} 搜索结果：</h3>
     <div class="am-u-md-8 am-u-sm-12">
 
         {%- block body -%}
-            {%- if post -%}
+            {%- if posts -%}
+                {%- for post in posts -%}
 
                 <article class="am-g blog-entry-article">
                     <div class="am-u-lg-2 am-u-md-2 am-u-sm-4 blog-entry-img">
-                        <img src="{{ post['author'].avatar }}" alt="" class="am-u-sm-12">
-                        <p><a>{{ post['author'].username }}</a></p>
+                        <img src="{{ post['author']['avatar']}}" alt="{{ post['author']['username'] }}  " class="am-u-sm-12">
+                        <p><a>{{ post['author']['username'] }}</a></p>
                     </div>
                     <div class="am-u-lg-10 am-u-md-10 am-u-sm-10 blog-entry-text">
-                        <h1><a href="">{{ post['title'] | safe }}</a></h1>
-                        <p> {{ post['date'] }} </p>
+                        <h1><a href="{{ url_for('show_post', id=post['id']) }}" target="_blank">{{ post['title'] | safe }}</a></h1>
                         <div class="tags">
                             {%- if post['tags'] -%}
                             {%- for tag in post['tags'] -%}
@@ -28,17 +36,34 @@
                             {%- endif -%}
                         </div>
 
-                        <p>{{ post['body'] |safe }}</p>
-
+                        <p>
+                            {%- if post['preview'] -%}
+                                {{ post['preview'] }}
+                            {%- else -%}
+                                {{ post['body'] }}
+                            {%- endif -%}
+                        </p>
+                        <p><a href="" class="blog-continue">read more</a></p>
+                        <p> {{ post['date'] |formatdate }} </p>
                     </div>
                 </article>
 
+                {%- endfor -%}
             {% else %}
-
-            <h1>Post not found..</h1>
-
+                <div class="post clearfix">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="page-header">
+                                <h1>Posts not found..</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {%- endif -%}
         {%- endblock -%}
+
+
+        {%- block pager -%}{%- include 'pager.html' -%}{%- endblock -%}
     </div>
 
     <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
@@ -92,17 +117,18 @@
 
 
 <!--[if lt IE 9]>
-<script src="//libs.useso.com/js/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/jquery/1.11.1/jquery.min.js"></script>
 <script src="//cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
 <script src="/js/polyfill/rem.min.js"></script>
-<script src="//libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
-<script src="//cdn.amazeui.org/amazeui/2.1.0/js/amazeui.legacy.min.js"></script>
+<script src="//cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<script src="//cdn.staticfile.org/amazeui/2.1.0/js/amazeui.legacy.min.js"></script>
 <![endif]-->
 
 <!--[if (gte IE 9)|!(IE)]><!-->
 <script src="//cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
-<script src="//cdn.amazeui.org/amazeui/2.1.0/js/amazeui.min.js"></script>
+<script src="//cdn.staticfile.org/amazeui/2.2.1/js/amazeui.js"></script>
 <!--<![endif]-->
+
 
 </body>
 </html>

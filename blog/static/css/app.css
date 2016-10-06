@@ -486,3 +486,23 @@ h1 span{
 .timeline-span {
     border-left:2px solid #10D07A;
 }
+
+/*header 样式 */
+
+.head .am-topbar {
+    background: #0A0E1B;
+    border: none;
+    min-height: 60px;
+}
+.search form {
+    overflow: hidden;
+    width: 70%;
+    border: 1px solid #2E343E!important;
+    background: #232837!important;
+    margin: 1.2rem 0 0;
+}
+.search input {
+    border: none!important;
+    background: none!important;
+    font-size: 1.4rem!important;
+}

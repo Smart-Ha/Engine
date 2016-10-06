@@ -17,24 +17,27 @@
 
 
 <div class="am-container">
-    <form class="am-form">
+    <form class="am-form" action="/new_post" method="post">
+        {% if error %}
+            <div class="am-form-group">{{ error_msg }}</div>
+        {% endif %}
         <div class="am-form-group">
             <span>标题:</span>
-            <input type="text" class="am-form-field" placeholder="请输入标题"/>
+            <input type="text" class="am-form-field" name="title" placeholder="请输入标题"/>
         </div>
         <div class="am-form-group">
             <span>摘要:</span>
-            <textarea  class="am-form-field" placeholder="请输入摘要"></textarea>
+            <textarea  class="am-form-field" name="short-text" placeholder="请输入摘要"></textarea>
         </div>
         <div class="am-form-group">
             <span>正文：</span>
             <div id="full-text" class="am-form-field">
-                <textarea style="display:none;">## 请使用markdown语言!</textarea>
+                <textarea style="display:none;" name="full-text">## 请使用markdown语言!</textarea>
             </div>
         </div>
         <div class="am-form-group">
             <span>请输入Tag标签，以";"隔开</span>
-            <input class="am-form-field" placeholder="请输入tag"/>
+            <input class="am-form-field" name="tags" placeholder="请输入tag"/>
         </div>
         <div class="am-form-group">
             <button class="am-btn am-btn-danger am-fr" type="submit">提交</button>

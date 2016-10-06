@@ -35,6 +35,13 @@ def login():
     return render_template('login.html', error=error, error_msg=error_msg)
 
 
+@app.route('/logout')
+def logout():
+    if userClass.logout():
+        flash('You are logged out!', 'success')
+    return redirect(url_for('login'))
+
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     error = False

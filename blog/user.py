@@ -13,7 +13,8 @@ class User:
         self.username = None
         self.email = None
         self.password = None
-        self.avatar = 'https://pic4.zhimg.com/f3365e7cf35be39fe008552059b7dcc3_m.jpg'
+        self.avatar = 'http://d.hiphotos.baidu.com/baike/w%3D268%3Bg%3D0/sign=' + \
+                      '86917ad6d139b6004dce08b1d16b5217/962bd40735fae6cde8d6d2540bb30f2442a70fa0.jpg'
         self.session_key = 'user'
 
         self.response = {'error': None, 'data': None}
@@ -91,3 +92,10 @@ class User:
             print '\n\n---\nError type: %s in file: %s on line: %s\nError details: %s\n---\n\n' \
                   % (error['type'], error['file'], error['line'], error['details'])
             print error_end
+
+    def logout(self):
+        if session.pop(self.session_key, None):
+            return True
+        else:
+            return False
+

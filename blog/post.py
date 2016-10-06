@@ -1,4 +1,5 @@
 # encoding=utf-8
+import datetime
 from bson import ObjectId
 
 
@@ -19,7 +20,14 @@ class Post:
             condition = {}
             # TODO tag & search
             if tag is not None:
-                condition = {'tags':tag}
+                condition = {'tags': tag}
+            elif search is not None:
+                condition = {'$or': [
+                    {'title': {'$regex': search, '$options': 'i'}},  # $regex 表示模糊查询，$options是$regex的参数 i表示不区分大小写
+                    {'body': {'$regex': search, '$options': 'i'}},
+                    {'preview': {'$regex': search, '$options': 'i'}}
+                ]}
+
             cursor = self.collection.find(condition).sort(
                 'date', direction=-1).skip(skip).limit(limit)
             self.response['data'] = []
@@ -30,17 +38,19 @@ class Post:
                     post['tags'] = []
                 if 'comments' not in post:
                     post['comments'] = []
-
+                if 'date' not in post:
+                    post['date'] = datetime.datetime.utcnow()
                 self.response['data'].append({
                     'id': post['_id'],
                     'title': post['title'],
                     'preview': post['preview'],
                     'body': post['body'],
-                    'date': post['date'],
                     'author': post['author'],
+                    'date': post['date'],
                     'tags': post['tags'],
                     'comments': post['comments']
                 })
+
         except Exception, e:
             self.print_debug_info(e, self.debug_mode)
             self.response['error'] = 'Posts not found...'
@@ -50,17 +60,31 @@ class Post:
     def get_post_by_id(self, id):
         self.response['error'] = None
         try:
-            self.response['data'] = self.collection.find_one({'_id': ObjectId(id)})
+
+            post = self.collection.find_one({'_id': ObjectId(id)})
+            if 'preview' not in post:
+                post['preview'] = ''
+            if 'tags' not in post:
+                post['tags'] = []
+            if 'comments' not in post:
+                post['comments'] = []
+            self.response['data'] = post
         except Exception, e:
             self.print_debug_info(e, self.debug_mode)
             self.response['error'] = 'Post not found'
 
         return self.response
 
-    def get_total_count(self, tag=None):
+    def get_total_count(self, tag=None, search=None):
         condition = {}
         if tag is not None:
             condition = {'tags': tag}
+        elif search is not None:
+            condition = {'$or': [
+                {'title': {'$regex': search, '$options': 'i'}},     # $regex 表示模糊查询，$options是$regex的参数 i表示不区分大小写
+                {'body': {'$regex': search, '$options': 'i'}},
+                {'preview': {'$regex': search, '$options': 'i'}}
+            ]}
 
         return self.collection.find(condition).count()
 
@@ -87,7 +111,7 @@ class Post:
         self.response['error'] = None
         try:
             self.collection.insert(post)
-            self.response['data'] = self.collection['_id']
+            self.response['data'] = post['_id']
         except Exception, e:
             self.response['error'] = 'system error ...'
             self.print_debug_info(e, self.debug_mode)
