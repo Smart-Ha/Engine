@@ -76,9 +76,10 @@ def new_post():
                 'tags': tag_array
             }
             post_id = request.form.get('post-id')
-            if post_id:
+            if post_id:     # 修改
                 post = postClass.update_post(post_data, post_id)
-            else:
+                post['data'] = post_id
+            else:   # 添加
                 post = postClass.add_new_post(post_data)
             if post['error']:
                 error = True
@@ -92,7 +93,15 @@ def new_post():
 
 @app.route('/edit_post', methods=['GET'])
 def edit_post():
-    return render_template('edit_post.html')
+    post_id = request.args.get('post_id')
+    if not post_id:
+        abort(404)
+    post = postClass.get_post_by_id(post_id)
+    if post['error']:
+        error = True
+        error_msg = post['error']
+        render_template('error.html', error=error, error_msg=error_msg)
+    return render_template('edit_post.html', post=post['data'])
 
 
 @app.route('/s/<query>', defaults={'page': 1})

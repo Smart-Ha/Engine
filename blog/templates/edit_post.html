@@ -1,0 +1,79 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>new post</title>
+
+    <!-- Amaze UI CSS -->
+    <link rel="stylesheet" href="//cdn.staticfile.org/amazeui/2.2.1/css/amazeui.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editormd.css') }}">
+    <link rel="stylesheet" href="../static/css/amazeui.css">
+</head>
+<body>
+
+
+<div class="am-container">
+    <form class="am-form" action="/new_post" method="post">
+        {% if error %}
+            <div class="am-form-group">{{ error_msg }}</div>
+        {% endif %}
+        <input type="hidden" name="post-id" value="{{ post['id'] }}"/>
+        <div class="am-form-group">
+            <span>标题:</span>
+            <input type="text" class="am-form-field" name="title" placeholder="请输入标题" value="{{ post['title'] }}"/>
+        </div>
+        <div class="am-form-group">
+            <span>摘要:</span>
+            <textarea  class="am-form-field" name="short-text" placeholder="请输入摘要">{{ post['preview'] }}</textarea>
+        </div>
+        <div class="am-form-group">
+            <span>正文：</span>
+            <div id="full-text" class="am-form-field">
+                <textarea style="display:none;" name="full-text">{{ post['body'] }}</textarea>
+            </div>
+        </div>
+        <div class="am-form-group">
+            <span>请输入Tag标签，以(英文)","隔开</span>
+            {% if post['tags'] %}
+            {% set post_tags = ','.join(post['tags']) %}
+            {% else %}
+            {% set post_tags = '' %}
+            {% endif %}
+            <input class="am-form-field" name="tags" placeholder="请输入tag" value="{{ post_tags }}"/>
+        </div>
+        <div class="am-form-group">
+            <button class="am-btn am-btn-danger am-fr" type="submit">提交</button>
+        </div>
+    </form>
+
+
+</div>
+
+
+
+
+
+{%- block script -%}{%- include 'script.html' -%}{%- endblock -%}
+<script src="{{ url_for('static', filename='js/editormd.min.js') }}"></script>
+
+<script>
+    $(function () {
+        Editor = editormd("full-text", {
+            width: "100%",
+            height: 560,
+            syncScrolling: "single",
+            path: "../static/lib/",
+            toolbarIcons : function() {//自定义工具栏
+                return ["undo", "redo", "|", "bold","italic", "quote","hr","|","h1","h2","h3","h4","|","code","preformatted-text"
+                     ,"table","|","link","reference-link" ,"image","|","clear","help","|","watch", "fullscreen", "preview"]
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

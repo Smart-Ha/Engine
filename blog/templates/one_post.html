@@ -10,34 +10,40 @@
     <div class="am-u-md-8 am-u-sm-12">
 
         {%- block body -%}
-            {%- if post -%}
+        {%- if post -%}
 
-                <article class="am-g blog-entry-article">
-                    <div class="am-u-lg-2 am-u-md-2 am-u-sm-4 blog-entry-img">
-                        <img src="{{ post['author'].avatar }}" alt="" class="am-u-sm-12">
-                        <p><a>{{ post['author'].username }}</a></p>
-                    </div>
-                    <div class="am-u-lg-10 am-u-md-10 am-u-sm-10 blog-entry-text">
-                        <h1><a href="">{{ post['title'] | safe }}</a></h1>
-                        <p> {{ post['date'] }} </p>
-                        <div class="tags">
-                            {%- if post['tags'] -%}
-                            {%- for tag in post['tags'] -%}
-                            &nbsp;<a href="{{ url_for('posts_by_tag', tag=tag) }}" class="blog-tag" >{{ tag }}</a>
-                            {%- endfor -%}
-                            {%- endif -%}
-                        </div>
+        <article class="am-g blog-entry-article">
+            <div class="am-u-lg-2 am-u-md-2 am-u-sm-4 blog-entry-img">
+                <img src="{{ post['author'].avatar }}" alt="" class="am-u-sm-12">
+                <p><a>{{ post['author'].username }}</a></p>
+            </div>
+            <div class="am-u-lg-10 am-u-md-10 am-u-sm-10 blog-entry-text">
+                <h1><a href="">{{ post['title'] | safe }}</a></h1>
+                <p> {{ post['date'] }} </p>
+                <div class="tags">
+                    {%- if post['tags'] -%}
+                    {%- for tag in post['tags'] -%}
+                    &nbsp;<a href="{{ url_for('posts_by_tag', tag=tag) }}" class="blog-tag">{{ tag }}</a>
+                    {%- endfor -%}
+                    {%- endif -%}
+                </div>
 
-                        <p>{{ post['body'] |safe }}</p>
+                <div id="test-editormd-view">
+                    <textarea style="display:none;" name="post-body-editormd">{{ post['body'] }}</textarea>
+                </div>
 
-                    </div>
-                </article>
 
-            {% else %}
+            </div>
+            {% if session['user'] and session['user']['username'] == post['author'].username %}
+            <p><a href="/edit_post?post_id={{ post['id'] }}">编辑</p>
+            {% endif %}
+        </article>
 
-            <h1>Post not found..</h1>
+        {% else %}
 
-            {%- endif -%}
+        <h1>Post not found..</h1>
+
+        {%- endif -%}
         {%- endblock -%}
     </div>
 
@@ -90,19 +96,36 @@
     <div class="blog-text-center">footer</div>
 </footer>
 
+{%- block script -%}{%- include 'script.html' -%}{%- endblock -%}
+<script src="{{ url_for('static', filename='js/editormd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/marked.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/prettify.min.js') }}"></script>
 
-<!--[if lt IE 9]>
-<script src="//libs.useso.com/js/jquery/1.11.1/jquery.min.js"></script>
-<script src="//cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="/js/polyfill/rem.min.js"></script>
-<script src="//libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
-<script src="//cdn.amazeui.org/amazeui/2.1.0/js/amazeui.legacy.min.js"></script>
-<![endif]-->
+<script src="{{ url_for('static', filename='lib/raphael.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/underscore.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/sequence-diagram.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/flowchart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/jquery.flowchart.min.js') }}"></script>
 
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="//cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
-<script src="//cdn.amazeui.org/amazeui/2.1.0/js/amazeui.min.js"></script>
-<!--<![endif]-->
+<script>
 
+
+    var full_text = editormd.markdownToHTML("test-editormd-view", {
+        //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+        htmlDecode: "style,script,iframe",  // you can filter tags decode
+        tocm: true,    // Using [TOCM]
+        //tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+        //gfm             : false,
+        //tocDropdown     : true,
+        // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+        emoji: true,
+        taskList: true,
+        tex: true,  // 默认不解析
+        flowChart: true,  // 默认不解析
+        sequenceDiagram: true// 默认不解析
+    })
+
+
+</script>
 </body>
 </html>

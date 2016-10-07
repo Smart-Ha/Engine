@@ -68,7 +68,16 @@ class Post:
                 post['tags'] = []
             if 'comments' not in post:
                 post['comments'] = []
-            self.response['data'] = post
+            self.response['data'] = {
+                    'id': post['_id'],
+                    'title': post['title'],
+                    'preview': post['preview'],
+                    'body': post['body'],
+                    'author': post['author'],
+                    'date': post['date'],
+                    'tags': post['tags'],
+                    'comments': post['comments']
+                }
         except Exception, e:
             self.print_debug_info(e, self.debug_mode)
             self.response['error'] = 'Post not found'
@@ -123,7 +132,7 @@ class Post:
         try:
             self.collection.update({'_id': ObjectId(post_id)},
                                    {'$set': post}, upsert=False)
-            self.response['data'] = self.collection['_id']
+            self.response['data'] = True
         except Exception, e:
             self.response['error'] = 'system error...'
             self.print_debug_info(e, self.debug_mode)
