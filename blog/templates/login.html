@@ -6,7 +6,15 @@
 <div class="am-g" style="border: #eee solid 1px;">
     <form action="{{ url_for('login') }}" method="POST" role="form" class="am-form am-u-md-8">
         <legend>Login</legend>
-
+        {%- with messages = get_flashed_messages(with_categories=True) -%}
+        {%- if messages -%}
+        {%- for category, message in messages -%}
+        <div class="response">
+            <span class="message {{ category }}">{%- if category == 'success' -%}✔{%- endif -%}&nbsp;{{ message }}</span>
+        </div>
+        {%- endfor -%}
+        {%- endif -%}
+        {%- endwith -%}
         <div class="am-form-group">
             <label for="">username</label>
             {%- if error -%}

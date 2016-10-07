@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+{%- block head -%}{%- include 'head.html' -%}{%- endblock -%}
+<body>
+<h1>404 ERROR</h1>
+{%- with messages = get_flashed_messages(with_categories=True) -%}
+    {%- if messages -%}
+    {%- for category, message in messages -%}
+    <h1>{{ message }}</h1>
+    {%- endfor -%}
+    {% else %}
+    <h1>Page or url not found...</h1>
+    {%- endif -%}
+{% endwith %}
+</body>
+</html>

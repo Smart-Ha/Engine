@@ -13,6 +13,11 @@ TAG_COLLECTION = DATABASE.tag
 USER_COLLECTION = DATABASE.user
 SETTINGS_COLLECTION = DATABASE.settings
 
+'''
+BLOG
+'''
+BLOG_DESCRIPTION = 'The world of professional nerd.'
+
 SECRET_KEY = 'WANGYONG'
 
 LOG_FILE = 'app.log'
